@@ -1,37 +1,16 @@
--- main.lua
-local Map = require("map")
+local player = require("player")
+local world = require("world")
 
-print("Program dimulai...")
-
--- player
-local player = {nama = "Ram", x = 0, y = 0, lokasi = "Spawn Point"}
-
--- fungsi untuk pindah lokasi
-local function pindahLokasi(namaLokasi)
-  local tujuan = Map.cariLokasi(namaLokasi)
-  if tujuan then
-    player.x = tujuan.x
-    player.y = tujuan.y
-    player.lokasi = tujuan.nama
-    print("🚶 " .. player.nama .. " pindah ke " .. tujuan.nama)
-  else
-    print("❌ Lokasi '" .. namaLokasi .. "' tidak ditemukan.")
-  end
+function love.load()
+    love.window.setTitle("Indo Hangout Prototype - ASDW Movement")
+    love.window.setMode(800, 600)
 end
 
--- tampilkan posisi player
-local function tampilkanPosisi()
-  print("📍 Lokasi saat ini: " .. player.lokasi .. " (x: " .. player.x .. ", y: " .. player.y .. ")")
+function love.update(dt)
+    player:update(dt)
 end
 
--- main loop sederhana
-while true do
-  tampilkanPosisi()
-  print("Ketik nama lokasi (Spawn Point, Market, Forest, Mountain) atau 'exit':")
-  local input = io.read()
-  if input == "exit" then
-    print("👋 Keluar dari game.")
-    break
-  end
-  pindahLokasi(input)
+function love.draw()
+    world:draw(player.x, player.y)
+    player:draw()
 end
